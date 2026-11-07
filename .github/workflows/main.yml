@@ -96,24 +96,10 @@ jobs:
       - name: Run static analysis
         run: vendor/bin/phpstan analyse
 
-  php82:
-    name: "php 8.2"
+  php83c:
+    name: "php 8.3, validator 0.2, laravel 12.0"
     runs-on: ubuntu-latest
-    container: "nofutur3/php-tests:8.2"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: composer update --no-interaction --prefer-lowest
-
-      - name: Run static analysis
-        run: vendor/bin/phpstan analyse
-
-  php82b:
-    name: "php 8.2, validator 0.2, laravel 12.0"
-    runs-on: ubuntu-latest
-    container: "nofutur3/php-tests:8.2"
+    container: "nofutur3/php-tests:8.3"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -124,10 +110,10 @@ jobs:
       - name: Run static analysis
         run: vendor/bin/phpstan analyse
 
-  php82d:
-    name: "php 8.2, validator 0.4, symfony 6.0"
+  php83d:
+    name: "php 8.3, validator 0.4, symfony 6.0"
     runs-on: ubuntu-latest
-    container: "nofutur3/php-tests:8.2"
+    container: "nofutur3/php-tests:8.3"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -138,10 +124,10 @@ jobs:
       - name: Run static analysis
         run: vendor/bin/phpstan analyse
 
-  php82c:
-    name: "php 8.2, validator 0.3"
+  php83e:
+    name: "php 8.3, validator 0.3"
     runs-on: ubuntu-latest
-    container: "nofutur3/php-tests:8.2"
+    container: "nofutur3/php-tests:8.3"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -152,10 +138,10 @@ jobs:
       - name: Run static analysis
         run: vendor/bin/phpstan analyse
 
-  php82a:
-    name: "php 8.2, validator 0.1, psr log 2.0"
+  php83f:
+    name: "php 8.3, validator 0.1, psr log 2.0"
     runs-on: ubuntu-latest
-    container: "nofutur3/php-tests:8.2"
+    container: "nofutur3/php-tests:8.3"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
