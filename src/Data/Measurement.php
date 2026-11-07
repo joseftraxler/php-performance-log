@@ -11,15 +11,6 @@ final class Measurement
     private ?float $nullStartAt = null;
 
     /**
-     * @deprecated use set
-     * @param float $time in seconds
-     */
-    public function start(?string $prefix, float $time): void
-    {
-        $this->set($prefix, $time);
-    }
-
-    /**
      * @param float $time in seconds
      */
     public function set(?string $prefix, float $time): void
@@ -32,15 +23,6 @@ final class Measurement
     }
 
     /**
-     * @deprecated use get
-     * @return float|null time in seconds
-     */
-    public function startAt(?string $prefix): ?float
-    {
-        return $this->get($prefix);
-    }
-
-    /**
      * @return float|null time in seconds
      */
     public function get(?string $prefix): ?float
@@ -50,20 +32,6 @@ final class Measurement
         }
 
         return $this->startsAt[$prefix] ?? null;
-    }
-
-    /**
-     * @deprecated use pop
-     * @return float time in seconds
-     */
-    public function finnish(?string $prefix): float
-    {
-        $time = $this->pop($prefix);
-        if ($time === null) {
-            throw new \LogicException('Measurement with prefix: "'.$prefix.'" not started!');
-        }
-
-        return $time;
     }
 
     /**

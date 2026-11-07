@@ -16,14 +16,6 @@ class LaravelPerformanceLogConfig extends PerformanceLogConfig
     }
 
     /**
-     * @deprecated will be removed
-     */
-    protected function getConfigDebug(): bool
-    {
-        return $this->getConfigValue('app.debug')->bool()->notNull();
-    }
-
-    /**
      * @return float|null threshold value in milliseconds
      */
     protected function getConfigSlowSqlQueryThreshold(): ?float

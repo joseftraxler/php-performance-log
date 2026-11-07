@@ -106,15 +106,6 @@ abstract class PerformanceLogConfig
     }
 
     /**
-     * @deprecated use $this->getSlowServerRequestThreshold
-     * @return float|null threshold value in milliseconds
-     */
-    final public function getSlowRequestThreshold(): ?float
-    {
-        return $this->getSlowServerRequestThreshold();
-    }
-
-    /**
      * @return float|null threshold value in milliseconds
      */
     final public function getSlowServerRequestThreshold(): ?float
@@ -124,23 +115,6 @@ abstract class PerformanceLogConfig
         }
 
         return $this->getConfigSlowServerRequestThreshold();
-    }
-
-    /**
-     * @deprecated use $this->setSlowServerRequestThreshold
-     * @param float|null $threshold value in milliseconds
-     */
-    final public function setSlowRequestThreshold(?float $threshold): void
-    {
-        $this->setSlowServerRequestThreshold($threshold);
-    }
-
-    /**
-     * @deprecated use $this->restoreSlowServerRequestThreshold
-     */
-    final public function restoreSlowRequestThreshold(): void
-    {
-        $this->restoreSlowServerRequestThreshold();
     }
 
     /**
@@ -207,14 +181,6 @@ abstract class PerformanceLogConfig
     }
 
     /**
-     * @deprecated will be removed
-     */
-    protected function getConfigDebug(): bool
-    {
-        return false;
-    }
-
-    /**
      * @return float|null threshold value in milliseconds
      */
     protected function getConfigSlowSqlQueryThreshold(): ?float
@@ -236,15 +202,6 @@ abstract class PerformanceLogConfig
     protected function getConfigSlowClientRequestThreshold(): ?float
     {
         return 700;
-    }
-
-    /**
-     * @deprecated use $this->getConfigSlowServerRequestThreshold
-     * @return float|null threshold value in milliseconds
-     */
-    protected function getConfigSlowRequestThreshold(): ?float
-    {
-        return $this->getConfigSlowServerRequestThreshold();
     }
 
     /**
