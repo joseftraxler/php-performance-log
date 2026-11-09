@@ -85,7 +85,7 @@ class LaravelProvider extends ServiceProvider
         /** @var DatabaseListener $databaseListener */
         $databaseListener = $this->app->make(DatabaseListener::class);
         /** @phpstan-ignore-next-line laravel developers are imbeciles in reality time for now return float|null */
-        $dispatcher->listen(QueryExecuted::class, static fn (QueryExecuted $query) => $databaseListener->onSqlQuery($query->sql, $query->time ?? 0.0, $query->connectionName));
+        $dispatcher->listen(QueryExecuted::class, static fn (QueryExecuted $query) => $databaseListener->onSqlQuery($query->sql, $query->time ?? 0.0, $query->connectionName, self::makeExplainQuery($query)));
         $dispatcher->listen(TransactionBeginning::class, static fn (TransactionBeginning $transaction) => $databaseListener->onTransactionStart($transaction->connection->transactionLevel(), $transaction->connectionName));
         $dispatcher->listen(TransactionRolledBack::class, static fn (TransactionRolledBack $transaction) => $databaseListener->onTransactionFinnish($transaction->connection->transactionLevel(), $transaction->connectionName));
         $dispatcher->listen(TransactionCommitted::class, static fn (TransactionCommitted $transaction) => $databaseListener->onTransactionFinnish($transaction->connection->transactionLevel(), $transaction->connectionName));
@@ -115,6 +115,29 @@ class LaravelProvider extends ServiceProvider
             $performanceLogChanel = null;
         }
         return $logManager->channel($performanceLogChanel);
+    }
+
+    /**
+     * @return (\Closure(): list<array<mixed>>)|null
+     */
+    private static function makeExplainQuery(QueryExecuted $query): ?\Closure
+    {
+        if (! \in_array($query->connection->getDriverName(), ['mysql', 'mariadb'], true)) {
+            return null;
+        }
+
+        // only the tabular explain, the JSON format can contain values from the query
+        return static function () use ($query): array {
+            $plan = [];
+            foreach ($query->connection->select('EXPLAIN '.$query->sql, $query->bindings) as $row) {
+                if (! \is_object($row)) {
+                    throw new \UnexpectedValueException('Database query explain row is not an object');
+                }
+                $plan[] = \get_object_vars($row);
+            }
+
+            return $plan;
+        };
     }
 
     private function makePerformanceLogConfig(): PerformanceLogConfig

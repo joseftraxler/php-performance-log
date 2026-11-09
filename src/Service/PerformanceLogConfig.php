@@ -50,6 +50,14 @@ abstract class PerformanceLogConfig
     /**
      * @return float|null threshold value in milliseconds
      */
+    final public function getSlowSqlQueryExplainThreshold(): ?float
+    {
+        return $this->getConfigSlowSqlQueryExplainThreshold();
+    }
+
+    /**
+     * @return float|null threshold value in milliseconds
+     */
     final public function getSlowDbTransactionThreshold(): ?float
     {
         $temporaryThreshold = self::getTemporaryThreshold($this->temporaryDbTransactionThreshold);
@@ -186,6 +194,14 @@ abstract class PerformanceLogConfig
     protected function getConfigSlowSqlQueryThreshold(): ?float
     {
         return 50;
+    }
+
+    /**
+     * @return float|null threshold value in milliseconds, null turns the explain off
+     */
+    protected function getConfigSlowSqlQueryExplainThreshold(): ?float
+    {
+        return null;
     }
 
     /**

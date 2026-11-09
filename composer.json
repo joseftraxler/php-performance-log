@@ -24,13 +24,17 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
-        "spaze/phpstan-disallowed-calls": "^4.5"
+        "spaze/phpstan-disallowed-calls": "^4.5",
+        "phpunit/phpunit": "^11.5|^12.0"
     },
     "suggest": {
         "sentry/sentry": "Allows receive logs with performance warning and make statistic on them, send notification, ..."
     },
     "autoload": {
         "psr-4": {"SimpleAsFuck\\PerformanceLog\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"SimpleAsFuck\\PerformanceLog\\Tests\\": "tests/"}
     },
     "extra": {
         "laravel": {

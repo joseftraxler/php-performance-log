@@ -23,8 +23,21 @@ class DatabaseListener
 
     /**
      * @param float $time in milliseconds
+     * @param (\Closure(): list<array<mixed>>)|null $explainQuery returns query plan rows, null if not supported
      */
-    public function onSqlQuery(string $sql, float $time, ?string $connectionName): void
+    public function onSqlQuery(string $sql, float $time, ?string $connectionName, ?\Closure $explainQuery = null): void
+    {
+        $this->logSqlQuery($sql, $time, $connectionName);
+
+        if ($explainQuery !== null) {
+            $this->explainSqlQuery($sql, $time, $connectionName, $explainQuery);
+        }
+    }
+
+    /**
+     * @param float $time in milliseconds
+     */
+    private function logSqlQuery(string $sql, float $time, ?string $connectionName): void
     {
         $queryThreshold = $this->performanceLogConfig->getSlowSqlQueryThreshold();
 
@@ -38,6 +51,44 @@ class DatabaseListener
         if ($time >= $queryThreshold) {
             $this->logger->warning('Database query is too slow: '.$time.'ms sql: "'.$sql.'" threshold: '.$queryThreshold. 'ms connection: "'.$connectionName.'" pid: '.\getmypid());
         }
+    }
+
+    /**
+     * The query plan is logged as info, so it is shown next to the slow query without a separate issue.
+     *
+     * @param float $time in milliseconds
+     * @param \Closure(): list<array<mixed>> $explainQuery
+     */
+    private function explainSqlQuery(string $sql, float $time, ?string $connectionName, \Closure $explainQuery): void
+    {
+        // shared by all listener instances, so queries executed by the explain are never explained again
+        static $explaining = false;
+        if ($explaining === true) {
+            return;
+        }
+
+        $threshold = $this->performanceLogConfig->getSlowSqlQueryExplainThreshold();
+        if ($threshold === null || $time < $threshold) {
+            return;
+        }
+        if (\preg_match('/^\s*select\b/i', $sql) !== 1) {
+            return;
+        }
+
+        $explaining = true;
+        try {
+            $plan = $explainQuery();
+        } catch (\Throwable $exception) {
+            // the exception message can contain values from the query, so only the exception type is logged
+            $this->logger->info('Database query explain failed: '.$exception::class.' sql: "'.$sql.'" connection: "'.$connectionName.'" pid: '.\getmypid());
+            return;
+        } finally {
+            $explaining = false;
+        }
+
+        $this->logger->info('Database query explain: '.$time.'ms sql: "'.$sql.'" threshold: '.$threshold.'ms connection: "'.$connectionName.'" pid: '.\getmypid(), [
+            'explain' => $plan,
+        ]);
     }
 
     public function onTransactionStart(int $transactionLevel, ?string $connectionName): void
