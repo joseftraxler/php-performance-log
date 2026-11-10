@@ -147,27 +147,6 @@ $performanceLogConfig->setSlowJobThreshold(10000); // 10 seconds
 // no need for threshold restoring, performance listener will handle it
 ```
 
-## Slow query explain
-
-The package can log a query plan (`EXPLAIN`) of a slow select query, the explain is turned off by default.
-The query plan is logged as info right after the slow query, so it is visible in the monitoring
-next to the slow query (for example in Sentry breadcrumbs) and does not make a separate issue.
-
-In Laravel application configure `database.slow_query_explain_threshold` in `performance_log.php` config,
-the explain is supported for MySQL and MariaDB connections.
-Only the tabular `EXPLAIN` is used, because `EXPLAIN FORMAT=JSON` can contain values from the query.
-If the explain fails, only the exception class is logged, because the exception message can contain values from the query.
-
-In other applications overwrite the method `getConfigSlowSqlQueryExplainThreshold` in your
-[PerformanceLogConfig](../src/Service/PerformanceLogConfig.php) extends and pass a closure returning rows of the query plan
-as the last argument of `DatabaseListener::onSqlQuery`, or null if your database does not support the explain.
-
-```php
-/** @var \SimpleAsFuck\PerformanceLog\Listener\DatabaseListener $databaseListener */
-
-$databaseListener->onSqlQuery($sql, $time, $connectionName, static fn (): array => $connection->fetchAll('EXPLAIN '.$sql, $bindings));
-```
-
 ## Usage with monitoring
 
 Is recommended send performance warning logs into your monitoring system, so you know what is slow.

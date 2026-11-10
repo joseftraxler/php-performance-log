@@ -21,7 +21,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php84:
     name: "php 8.4, guzzle promise 3"
@@ -44,7 +44,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php84a:
     name: "php 8.4, validator 0.7, guzzle promise 2"
@@ -61,7 +61,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83:
     name: "php 8.3"
@@ -78,7 +78,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83b:
     name: "php 8.3, validator 0.6, laravel 11.0, psr http message 1.0, symfony 7.0"
@@ -95,7 +95,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83a:
     name: "php 8.3, validator 0.5, laravel 10.49"
@@ -112,7 +112,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83c:
     name: "php 8.3, validator 0.2, laravel 12.0"
@@ -129,7 +129,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83d:
     name: "php 8.3, validator 0.4, symfony 6.0"
@@ -146,7 +146,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83e:
     name: "php 8.3, validator 0.3"
@@ -163,7 +163,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php
 
   php83f:
     name: "php 8.3, validator 0.1, psr log 2.0"
@@ -180,4 +180,4 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit test/ --bootstrap vendor/autoload.php

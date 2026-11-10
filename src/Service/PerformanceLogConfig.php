@@ -197,7 +197,7 @@ abstract class PerformanceLogConfig
     }
 
     /**
-     * @return float|null threshold value in milliseconds, null turns the explain off
+     * @return float|null threshold value in milliseconds
      */
     protected function getConfigSlowSqlQueryExplainThreshold(): ?float
     {
